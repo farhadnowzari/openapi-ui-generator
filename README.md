@@ -6,6 +6,33 @@ I created this repository, to make simpler to publish a monorepos customized ope
 ## How to use it?
 Each package has it's own container image published on github. The containers expect the definitions to be copied under `docs/`. Then the browser when it loads, will read the json files and will pass them to the generators. This way, you also can have more than one definition and in the UI, you can select which one, you want to display.
 
+### Installation
+There are two versions of container images will be published in each release. One will generate a `swagger` ui and the other, a `redoc` ui.
+
+* redoc
+
+    ```sh
+    docker pull ghcr.io/farhadnowzari/openapi:1.0.0-redoc
+    ```
+
+    or to use as a base image
+
+    ```dockerfile
+    FROM ghcr.io/farhadnowzari/openapi:1.0.0-redoc
+    ```
+
+* swagger
+
+    ```sh
+    docker pull ghcr.io/farhadnowzari/openapi:1.0.0-swagger
+    ```
+
+    or to use as a base image
+
+    ```dockerfile
+    FROM ghcr.io/farhadnowzari/openapi:1.0.0-swagger
+    ```
+
 ### One definition without customization
 If you have only one definition, copy the `*.json`, under `/public/docs/` and rename it to `default.json`.
 
