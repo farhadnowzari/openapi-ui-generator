@@ -1,0 +1,22 @@
+name: Docker Image CI
+
+on:
+  push:
+    tags:
+      - "1.*"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      PACKAGE_VERSION: ${{ github.ref_name }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and push Docker images
+        run: |
+          export CA_PAT=${{ secrets.PERSONAL_TOKEN }}
+          echo $CA_PAT | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          docker build -t ghcr.io/${{ github.repository_owner }}/openapi:$PACKAGE_VERSION-swagger --build-arg TARGET_PACKAGE=swagger .
+          docker build -t ghcr.io/${{ github.repository_owner }}/openapi:$PACKAGE_VERSION-redoc --build-arg TARGET_PACKAGE=redoc .
+          docker push ghcr.io/${{ github.repository_owner }}/openapi:$PACKAGE_VERSION-swagger
+          docker push ghcr.io/${{ github.repository_owner }}/openapi:$PACKAGE_VERSION-redoc
